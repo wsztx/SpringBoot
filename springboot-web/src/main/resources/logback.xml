@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="60 seconds" debug="false" >
+	<statusListener class="ch.qos.logback.core.status.NopStatusListener" />
+
+	<!-- 定义参数 -->
+	<property name="log.lever" value="info" />
+	<property name="log.max.size" value="100MB" />
+	<property name="log.file.path" value="${catalina.base}/logs"></property>
+	<property name="log.pattern" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n" />
+
+	<!-- CONSOLE -->
+	<appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<Pattern>${log.pattern}</Pattern>
+		</encoder>
+	</appender>
+
+	<!-- ALL -->
+	<appender name="all" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${log.file.path}/all.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${log.file.path}/all/all.%d{yyyy-MM-dd}.%i.log.zip</fileNamePattern>
+			<timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<maxFileSize>${log.max.size}</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+		</rollingPolicy>
+		<layout class="ch.qos.logback.classic.PatternLayout">
+			<pattern>${log.pattern}</pattern>
+		</layout>
+	</appender>
+ 
+	<!-- DEBUG -->
+	<appender name="debug" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${log.file.path}/debug.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${log.file.path}/debug/debug.%d{yyyy-MM-dd}.%i.log.zip</fileNamePattern>
+			<timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<maxFileSize>${log.max.size}</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+		</rollingPolicy>
+		<layout class="ch.qos.logback.classic.PatternLayout">
+			<pattern>${log.pattern}</pattern>
+		</layout>
+		<filter class="ch.qos.logback.classic.filter.LevelFilter">
+			<level>DEBUG</level>
+			<onMatch>ACCEPT</onMatch>
+			<onMismatch>DENY</onMismatch>
+		</filter>
+	</appender>
+	
+	<!-- INFO -->
+	<appender name="info" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${log.file.path}/info.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${log.file.path}/info/info.%d{yyyy-MM-dd}.%i.log.zip</fileNamePattern>
+			<timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<maxFileSize>${log.max.size}</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+		</rollingPolicy>
+		<layout class="ch.qos.logback.classic.PatternLayout">
+			<pattern>${log.pattern}</pattern>
+		</layout>
+		<filter class="ch.qos.logback.classic.filter.LevelFilter">
+			<level>INFO</level>
+			<onMatch>ACCEPT</onMatch>
+			<onMismatch>DENY</onMismatch>
+		</filter>
+	</appender>
+	
+	<!-- ERROR -->
+	<appender name="error" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${log.file.path}/error.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${log.file.path}/error/error.%d{yyyy-MM-dd}.%i.log.zip</fileNamePattern>
+			<timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<maxFileSize>${log.max.size}</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+		</rollingPolicy>
+		<layout class="ch.qos.logback.classic.PatternLayout">
+			<pattern>${log.pattern}</pattern>
+		</layout>
+		<filter class="ch.qos.logback.classic.filter.LevelFilter">
+			<level>ERROR</level>
+			<onMatch>ACCEPT</onMatch>
+			<onMismatch>DENY</onMismatch>
+		</filter>
+	</appender>
+	
+	<!-- WARN -->
+	<appender name="warn" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${log.file.path}/warn.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${log.file.path}/warn/warn.%d{yyyy-MM-dd}.%i.log.zip</fileNamePattern>
+			<timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<maxFileSize>${log.max.size}</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+		</rollingPolicy>
+		<layout class="ch.qos.logback.classic.PatternLayout">
+			<pattern>${log.pattern}</pattern>
+		</layout>
+		<filter class="ch.qos.logback.classic.filter.LevelFilter">
+			<level>WARN</level>
+			<onMatch>ACCEPT</onMatch>
+			<onMismatch>DENY</onMismatch>
+		</filter>
+	</appender>
+
+	<logger name="org.springframework"  level="warn" />
+	<logger name="java.sql.Connection" level="debug"/>
+	<logger name="java.sql.Statement" level="debug"/>
+	<logger name="java.sql.PreparedStatement" level="debug"/>
+
+	<logger name="com.universe.springboot" level="debug" additivity="false">
+		<appender-ref ref="console" />
+		<appender-ref ref="all" />
+		<appender-ref ref="debug" />
+		<appender-ref ref="info" />
+		<appender-ref ref="error" />
+		<appender-ref ref="warn" />
+	</logger>
+
+	<root level="${log.lever}">
+		<appender-ref ref="console" />
+		<appender-ref ref="all" />
+		<appender-ref ref="debug" />
+		<appender-ref ref="info" />
+		<appender-ref ref="error" />
+		<appender-ref ref="warn" />
+	</root>
+</configuration>
